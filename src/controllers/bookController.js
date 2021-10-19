@@ -10,16 +10,16 @@ const registerBook = async function (req, res) {
     try {
         const requestBody = req.body;
 
-        // if (!validator.isValid(requestBody)) {
-        //     res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide details' })
-        //     return
-        // }
+        if (!validator.isValid(requestBody)) {
+            res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide details' })
+             return
+        }
         const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = requestBody
 
-        // if (!validator.isValid(title)) {
-        //     res.status(400).send({ status: false, message: 'Please provide title' })
-        //     return
-        // }
+        if (!validator.isValid(title)) {
+             res.status(400).send({ status: false, message: 'Please provide title' })
+             return
+         }
             console.log(requestBody)
         const isTitleAlreadyUsed = await bookModel.findOne({ title }); // {email: email} object shorthand property
 
@@ -160,11 +160,7 @@ const getBook = async function (req, res) {
 
         const reviews = await reviewModel.find({ bookId: req.params.bookId })
 
-        // if (Array.isArray(interns) && interns.length === 0) {
-        //     res.status(404).send({ status: false, message: 'No Interns Registered' })
-        //     return
-        // }
-
+       
 
         let details = { book,reviewsData: reviews }
         res.status(200).send({ status: true, message: "Success", data: {...book["_doc"], reviewsData:reviews} })
@@ -270,9 +266,7 @@ const deleteBook = async function (req, res) {
             res.status(404).send({ status: false, message: `Book is already deleted.` })
         }
 
-        // if (book.userId.toString() !== userIdFromToken) {
-        //     res.status(401).send({ status: false, message: `Unauthorized access! Owner info doesn't match` });
-        // }
+      
 
         let bookDeleted = await bookModel.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true } )
         res.status(200).send({ status: true, message: `Success`, data: bookDeleted})
