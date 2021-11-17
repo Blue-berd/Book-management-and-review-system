@@ -7,8 +7,7 @@ const reviewSchema = new mongoose.Schema(
     bookId: { type: objectId, required: "bookId is required", refs: "Book" },
     reviewedBy: {
       type: String,
-      required: "reviewedBy is required",
-      default: "Guest"
+      required: "reviewedBy is required"
     },
     reviewedAt: { type: Date, required: true, default: new Date()  },
     rating: { type: Number, min: 1, max: 5, required: "rating is required" },
